@@ -5,6 +5,9 @@
       <div id="sliderSegmentedControl" class="mui-scroll-wrapper
             mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
         <div class="mui-scroll">
+          <a class="mui-control-item mui-active" @tap="getPhotoListByCateId(0)">
+            全部
+          </a>
           <a :class="['mui-control-item',item.id === 0 ? 'mui-active' : '']"
              v-for="item in cates" :key="item.id"
              @tap="getPhotoListByCateId(item.id)">
@@ -73,7 +76,6 @@
           console.log(data);
           if (data.data.status === 0) {
             this.list = data.data.message;
-            Toast('获取图片列表成功。。。')
           } else {
             Toast('获取图片列表失败。。。')
           }
