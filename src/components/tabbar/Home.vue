@@ -8,13 +8,13 @@
     <!-- 九宫格 到 6宫格 的改造工程 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <router-link to="#">
+        <router-link to="/home/newsList">
           <img src="../../assets/images/menu1.png" alt="">
           <div class="mui-media-body">新闻资讯</div>
         </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <router-link to="#">
+        <router-link to="/home/photoList">
           <img src="../../assets/images/menu2.png" alt="">
           <div class="mui-media-body">图片分享</div>
         </router-link>
@@ -62,18 +62,17 @@ export default {
   },
   methods: {
     getImgList() {
-      https.Get('api/getlunbo',{} ).then((data) => {
-        console.log(data);
-        if (data.data.status === 0){
-          this.imgList = data.data.message;
-          Toast("加载轮播图成功。。。")
-        }else {
-          Toast("加载轮播图失败。。。")
+      https.Get('api/getlunbo', {}).then((data) => {
+        console.log(data)
+        if (data.data.status === 0) {
+          this.imgList = data.data.message
+        } else {
+          Toast('加载轮播图失败。。。')
         }
-      }).catch(err=>{
-          console.log(err)
-        }
-      );
+      }).catch(err => {
+        console.log(err)
+      }
+      )
     }
   }
 }

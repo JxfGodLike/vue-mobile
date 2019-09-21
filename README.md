@@ -33,8 +33,8 @@
 ## 制作首页轮播图布局
 
 ## 加载首页轮播图数据
-1. 获取数据， 如何获取呢， 使用 vue-resource
-2. 使用 vue-resource 的 this.$http.get 获取数据
+1. 获取数据， 如何获取呢， 使用 axios
+2. 使用 axios 封装http.js的Get 获取数据
 3. 获取到的数据，要保存到 data 身上
 4. 使用 v-for 循环渲染 每个 item 项
 
@@ -84,6 +84,8 @@
  1. 制作 顶部的滑动条
  2. 制作 底部的图片列表
 ### 制作顶部滑动条的坑们：
+ 0. export 'default' (imported as 'mui') was not found in './assets/mui/js/mui'报错
+  + 把.babelrcl里面plugins的"transform-runtime"删除
  1. 需要借助于 MUI 中的 tab-top-webview-main.html 
  2. 需要把 slider 区域的 mui-fullscreen 类去掉
  3. 滑动条无法正常触发滑动，通过检查官方文档，发现这是JS组件，需要被初始化一下：
