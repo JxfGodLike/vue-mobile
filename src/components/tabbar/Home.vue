@@ -1,10 +1,6 @@
 <template>
   <div>
-    <mt-swipe :auto="4000">
-      <mt-swipe-item v-for="item in imgList" :key="item.id">
-        <img :src="item.img" alt="">
-      </mt-swipe-item>
-    </mt-swipe>
+    <swipe :swipeList="imgList" :isFull="true"></swipe>
     <!-- 九宫格 到 6宫格 的改造工程 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
@@ -20,7 +16,7 @@
         </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <router-link to="#">
+        <router-link to="/home/goodsList">
           <img src="../../assets/images/menu3.png" alt="">
           <div class="mui-media-body">商品购买</div>
         </router-link>
@@ -48,6 +44,7 @@
 </template>
 
 <script>
+import swipe from '../common/Swipe.vue'
 import https from '../../http.js'
 import {Toast} from 'mint-ui'
 export default {
@@ -74,6 +71,9 @@ export default {
       }
       )
     }
+  },
+  components: {
+    swipe
   }
 }
 </script>
