@@ -9,8 +9,7 @@
 </template>
 
 <script>
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
+
   export default {
     name: 'GoodsDesc',
     data() {
@@ -23,12 +22,16 @@
     },
     methods: {
       getGoodsDesc() {
-        https.Get('api/goods/getdesc/' + this.$route.params.id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/goods/getdesc/' + this.$route.params.id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.info = data.data.message[0]
           } else {
-            Toast('获取详情失败。。。')
+            this.Toast('获取图文详情失败...')
           }
         }).catch(err => {
             console.log(err)

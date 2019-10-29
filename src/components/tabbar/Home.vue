@@ -45,8 +45,7 @@
 
 <script>
 import swipe from '../common/Swipe.vue'
-import https from '../../http.js'
-import {Toast} from 'mint-ui'
+
 export default {
   name: 'Home',
   data () {
@@ -59,17 +58,20 @@ export default {
   },
   methods: {
     getImgList() {
-      https.Get('api/getlunbo', {}).then((data) => {
-        console.log(data)
+      this.$http({
+        url: 'api/getlunbo',
+        method: 'get',
+        data: {}
+      }).then(data => {
+        console.log(data.data)
         if (data.data.status === 0) {
           this.imgList = data.data.message
         } else {
-          Toast('加载轮播图失败。。。')
+          this.Toast('加载轮播图失败...')
         }
       }).catch(err => {
         console.log(err)
-      }
-      )
+      })
     }
   },
   components: {

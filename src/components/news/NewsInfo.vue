@@ -20,8 +20,7 @@
 
 <script>
   import CommentBox from '../../components/common/comment-box.vue'
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
+
   export default {
     name: 'NewsInfo',
 
@@ -36,17 +35,20 @@
     },
     methods: {
       getNewsInfo() {
-        https.Get('api/getnew/' + this.id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getnew/' + this.id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data)
           if (data.data.status === 0) {
             this.newsInfo = data.data.message[0];
           } else {
-            Toast('获取新闻失败。。。')
+            this.Toast('获取新闻详情失败...')
           }
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
       }
     },
     components: {

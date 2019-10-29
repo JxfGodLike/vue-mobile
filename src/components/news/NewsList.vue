@@ -19,8 +19,7 @@
 </template>
 
 <script>
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
+
   export default {
     name: 'NewsList',
     data () {
@@ -33,17 +32,20 @@
     },
     methods: {
       getNewsList() {
-        https.Get('api/getnewslist', {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getnewslist',
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.newsList = data.data.message;
           } else {
-            Toast('获取新闻列表失败。。。')
+            this.Toast('获取新闻列表失败...')
           }
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
       }
     }
   }

@@ -25,8 +25,7 @@
 
 <script>
   import CommentBox from '../common/comment-box.vue'
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
+
   export default {
     name: 'PhotoInfo',
     data() {
@@ -42,21 +41,28 @@
     },
     methods: {
       getPhotoInfo() {
-        https.Get('api/getimageInfo/' + this.id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getimageInfo/' + this.id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.photoInfo = data.data.message[0];
           } else {
-            Toast('获取图片失败。。。')
+            this.Toast('获取图片详情失败...')
           }
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
       },
       getThumbs() {
-        https.Get('api/getthumimages/' + this.id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getthumimages/' + this.id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             // 循环每个图片数据，补全图片的宽和高
             data.data.message.forEach(item => {
@@ -67,12 +73,11 @@
             });
             this.list = data.data.message
           } else {
-            Toast('获取图片失败。。。')
+            this.Toast('获取缩略图失败...')
           }
         }).catch(err => {
           console.log(err)
-          }
-        );
+        })
       }
     },
     components: {

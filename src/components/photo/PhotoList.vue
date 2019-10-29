@@ -34,8 +34,7 @@
 
 <script>
   import mui from '../../assets/mui/js/mui.js'
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
+
   export default {
     name: 'PhotoList',
     data() {
@@ -59,30 +58,36 @@
     },
     methods: {
       getAllCategory() {
-        https.Get('api/getimgcategory', {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getimgcategory',
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.cates = data.data.message;
           } else {
-            Toast('获取图片种类失败。。。')
+            this.Toast('获取图片分类失败...')
           }
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
       },
       getPhotoListByCateId(id) {
-        https.Get('api/getimages/' + id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getimages/' + id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.list = data.data.message;
           } else {
-            Toast('获取图片列表失败。。。')
+            this.Toast('获取图片列表失败...')
           }
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
       }
 
     }

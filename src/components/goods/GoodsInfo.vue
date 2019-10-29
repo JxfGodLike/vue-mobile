@@ -63,8 +63,6 @@
   import Swipe from '../common/Swipe.vue'
   // 导入 数字选择框 组件
   import NumberBox from '../common/number-box.vue'
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
 
   export default {
     name: 'GoodsInfo',
@@ -83,8 +81,12 @@
     },
     methods: {
       getSwipeList() {
-        https.Get('api/getthumimages/' + this.id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getthumimages/' + this.id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             // 循环每个图片数据，补全图片的宽和高
             data.data.message.forEach(item => {
@@ -92,7 +94,7 @@
             });
             this.swipeList = data.data.message
           } else {
-            Toast('获取图片失败。。。')
+            this.Toast('获取轮播图失败...')
           }
         }).catch(err => {
             console.log(err)
@@ -100,12 +102,16 @@
         );
       },
       getGoodsInfo() {
-        https.Get('api/goods/getinfo/' + this.id, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/goods/getinfo/' + this.id,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.goodsInfo = data.data.message[0];
           } else {
-            Toast('获取商品失败。。。')
+            this.Toast('获取商品详情失败...')
           }
         }).catch(err => {
             console.log(err)
@@ -127,6 +133,13 @@
       addToShopCar() {
         // 添加到购物车
         this.ballFlag = !this.ballFlag;
+        var shopCar = {
+          id: this.id,
+          count: this.selectedCount,
+          price: this.goodsInfo.sell_price,
+          selected: true
+        };
+        this.$store.commit('saveCar', shopCar);
       },
       beforeEnter(el) {
         el.style.transform = 'translate(0, 0)';

@@ -21,8 +21,7 @@
 </template>
 
 <script>
-  import https from '../../http.js'
-  import {Toast} from 'mint-ui'
+
   export default {
     name: 'comment-box',
     data() {
@@ -38,24 +37,33 @@
     },
     methods: {
       getCommentList() {
-        https.Get('api/getcomments/' + this.id + '?pageindex=' + this.pageIndex, {}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/getcomments/' + this.id + '?pageindex=' + this.pageIndex,
+          method: 'get',
+          data: {}
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             this.comments = this.comments.concat(data.data.message);
           } else {
-            Toast('获取评论成功。。。')
+            this.Toast('获取评论失败...')
           }
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
       },
       postComment() {
         if (this.msg.trim().length === 0) {
-          return Toast('评论内容不能为空！');
+          return this.Toast('评论内容不能为空！');
         }
-        https.Post('api/postcomment/' + this.$route.params.id, {'content': this.msg.trim()}).then((data) => {
-          console.log(data);
+        this.$http({
+          url: 'api/postcomment/' + this.$route.params.id,
+          method: 'post',
+          data: {
+            'content': this.msg.trim()
+          }
+        }).then(data => {
+          console.log(data.data);
           if (data.data.status === 0) {
             // 1. 拼接出一个评论对象
             var cmt = {
@@ -66,11 +74,10 @@
             this.comments.unshift(cmt);
             this.msg = '';
           }
-          Toast(data.data.message)
+          this.Toast(data.data.message)
         }).catch(err => {
-            console.log(err)
-          }
-        );
+          console.log(err)
+        })
         return false;
       },
       getMore() {
