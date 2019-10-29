@@ -3,14 +3,20 @@
     <div class="mui-card" v-for="(item, i) in goodsList" :key="item.id">
       <div class="mui-card-content">
         <div class="mui-card-content-inner">
-          <mt-switch></mt-switch>
+<!--          <div class="mui-switch mui-switch-mini" :class="{'mui-active': $store.getters.getStatus[item.id]}">-->
+<!--            <div class="mui-switch-handle"></div>-->
+<!--          </div>-->
+          <mt-switch v-model="$store.getters.getStatus[item.id]" @change="selectChange(item.id, $store.getters.getStatus[item.id])"></mt-switch>
           <img :src="item.thumb_path" alt="">
           <div>
             <h3>{{item.title}}</h3>
             <p class="control">
               <span class="price">￥{{item.sell_price}}</span>
-              <number-box :auto-update="true" :goodsId="item.id" :initCount="$store.getters.getGoodsCount[item.id]"
-                          :max="$store.getters.getGoodsMax[item.id]"></number-box>
+              <number-box :auto-update="true"
+                          :goodsId="item.id"
+                          :initCount="$store.getters.getGoodsCount[item.id]"
+                          :max="$store.getters.getGoodsMax[item.id]">
+              </number-box>
               <a href="javascript:;" @click.prevent="remove(item.id, i)">删除</a>
             </p>
           </div>
@@ -22,7 +28,7 @@
         <div class="mui-card-content-inner jiesuan">
           <div>
             <p>总计（不含运费）</p>
-            <p class="buy">已勾选商品 <span></span> 件，总价：<span>￥</span>元</p>
+            <p class="buy">已勾选商品 {{$store.getters.getCountAndAmount.count}}<span></span> 件，总价：<span>￥{{$store.getters.getCountAndAmount.amount}}</span>元</p>
           </div>
           <mt-button type="danger">去结算</mt-button>
         </div>
@@ -67,6 +73,17 @@ export default {
           console.log(err)
         }
       );
+    },
+    remove(id, index) {
+      this.goodsList.splice(index, 1);
+      this.$store.commit('removeForCar', id)
+    },
+    selectChange(id, status) {
+      var shopCar = {
+        id: id,
+        selected: status
+      };
+      this.$store.commit('updateStatus', shopCar)
     }
   },
   components: {

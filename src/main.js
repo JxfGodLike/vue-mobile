@@ -74,9 +74,19 @@ var store = new Vuex.Store({
     },
     updateCar(state, shopCar) {
       // eslint-disable-next-line consistent-return
-      state.car.some(item => {
+      state.car.forEach(item => {
         if (item.id == shopCar.id) {
           item.count = parseInt(shopCar.count)
+          return true
+        }
+      })
+      localStorage.setItem('car', JSON.stringify(state.car))
+    },
+    updateStatus(state, shopCar) {
+      // eslint-disable-next-line consistent-return
+      state.car.forEach(item => {
+        if (item.id == shopCar.id) {
+          item.selected = shopCar.selected
           return true
         }
       })
@@ -85,6 +95,16 @@ var store = new Vuex.Store({
     selectedCount(state, selectedCount) {
       // eslint-disable-next-line consistent-return
       state.selectedCount = selectedCount
+    },
+    removeForCar(state, id) {
+      // eslint-disable-next-line consistent-return
+      state.car.forEach((item, i) => {
+        if (item.id == id) {
+          state.car.splice(i, 1);
+          return false;
+        }
+      })
+      localStorage.setItem('car', JSON.stringify(state.car))
     }
   },
   getters: {
@@ -111,6 +131,26 @@ var store = new Vuex.Store({
     },
     getSelectedCount(state) {
       return state.selectedCount
+    },
+    getStatus(state) {
+      var o = {};
+      state.car.forEach(item => {
+        o[item.id] = item.selected;
+      })
+      return o;
+    },
+    getCountAndAmount(state) {
+      var o = {
+        count: 0,
+        amount: 0
+      }
+      state.car.forEach(item => {
+        if (item.selected) {
+          o.count += item.count;
+          o.amount += item.price * item.count
+        }
+      })
+      return o;
     }
   }
 })

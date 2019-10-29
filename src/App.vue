@@ -2,7 +2,11 @@
   <div id="app">
 <!--    <img src="./assets/logo.png">-->
     <!-- 顶部 Header 区域 -->
-    <mt-header fixed title="Vue-Mobile"></mt-header>
+    <mt-header fixed title="Vue-Mobile">
+      <span slot="left" @click="back" v-show="flag">
+        <mt-button icon="back"></mt-button>
+      </span>
+    </mt-header>
     <!-- 中间的 路由 router-view 区域 -->
     <transition>
       <router-view/>
@@ -33,7 +37,25 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      flag: false
+    }
+  },
+  created() {
+    this.flag = this.$route.path !== '/home';
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    }
+  },
+  watch: {
+    '$route.path': function (val) {
+      this.flag = val !== '/home';
+    }
+  }
 }
 </script>
 
