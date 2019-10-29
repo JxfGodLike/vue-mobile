@@ -17,7 +17,7 @@
         <span class="mui-icon mui-icon-contact"></span>
         <span class="mui-tab-label">会员</span>
       </router-link>
-      <router-link class="mui-tab-item-my" to="shopCar">
+      <router-link class="mui-tab-item-my" to="/shopCar">
               <span class="mui-icon mui-icon-extra mui-icon-extra-cart">
                   <span class="mui-badge" id="badge">{{$store.getters.getAllCount}}</span>
               </span>

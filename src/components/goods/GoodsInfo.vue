@@ -25,7 +25,7 @@
           <p class="price">
             市场价：<del>￥{{ goodsInfo.market_price }}</del>&nbsp;&nbsp;销售价：<span class="now_price">￥{{ goodsInfo.sell_price }}</span>
           </p>
-          <p>购买数量：<number-box @getCount="getSelectedCount" :max="goodsInfo.stock_quantity"></number-box></p>
+          <p>购买数量：<number-box :init-count="1" :goods-id="this.id" :auto-update="false" :max="$store.getters.getGoodsMax[this.id]"></number-box></p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
             <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>
@@ -72,7 +72,7 @@
         swipeList: [], // 轮播图的数据
         goodsInfo: {}, // 获取到的商品的信息
         ballFlag: false, // 控制小球的隐藏和显示的标识符
-        selectedCount: 1 // 保存用户选中的商品数量， 默认，认为用户买1个
+        selectedCount: this.$store.getters.getSelectedCount // 保存用户选中的商品数量， 默认，认为用户买1个
       }
     },
     created () {
@@ -118,10 +118,6 @@
           }
         );
       },
-      getSelectedCount(count) {
-        this.selectedCount = count;
-        console.log('父组件拿到的数量值为： ' + this.selectedCount);
-      },
       goDesc(id) {
         // 点击使用编程式导航跳转到 图文介绍页面
         this.$router.push({ name: 'GoodsDesc', params: { id } });
@@ -135,10 +131,12 @@
         this.ballFlag = !this.ballFlag;
         var shopCar = {
           id: this.id,
-          count: this.selectedCount,
+          count: this.$store.getters.getSelectedCount,
           price: this.goodsInfo.sell_price,
-          selected: true
+          selected: true,
+          max: this.goodsInfo.stock_quantity
         };
+        console.log(shopCar.count)
         this.$store.commit('saveCar', shopCar);
       },
       beforeEnter(el) {
